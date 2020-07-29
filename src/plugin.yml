@@ -1,0 +1,11 @@
+name: "Events"
+main: "club.s1ant.events.EventsPlugin"
+version: "1"
+api-version: "1.8"
+author: "S1ant"
+softdepend: ["PlaceholderAPI"]
+commands:
+  event:
+    description: "Main Command for Event Management"
+  revive:
+    description: "Command to revive someone back into the Event."

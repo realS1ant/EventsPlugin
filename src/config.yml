@@ -1,0 +1,8 @@
+permission: "events.manage"
+prefix: "&6&lEvents &7»"
+primarycolor: "&6"
+secondarycolor: "&7"
+jail:
+  x: 0.5
+  y: 63
+  z: 0.5
