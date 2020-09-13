@@ -42,9 +42,6 @@ public class EventCMD implements CommandExecutor {
                 eventClass.startEvent();
                 Bukkit.broadcastMessage(prefix + "The event has begun!");
                 sender.sendMessage(prefix + "Adding everyone in the server.");
-                for(Player p : Bukkit.getOnlinePlayers()){
-                    eventClass.addPlayer(p);
-                }
                 return false;
             case "count":
                 if(!eventClass.isStarted()){
@@ -73,6 +70,7 @@ public class EventCMD implements CommandExecutor {
                 }
                 eventClass.addPlayer(player);
                 sender.sendMessage(prefix + color2 + player.getName() + color1 + " has been revived.");
+                player.sendMessage(prefix + color1 + ChatColor.translateAlternateColorCodes('&', main.getConfig().getString("revived")));
                 return false;
             case "isalive":
                 if(!eventClass.isStarted()){
@@ -109,6 +107,7 @@ public class EventCMD implements CommandExecutor {
                 }
                 eventClass.removePlayer(pl);
                 sender.sendMessage(prefix + color2 + pl.getName() + color1 + " has been excluded from the event!");
+                pl.sendMessage(prefix + color1 + "You've been excluded from the event.");
                 return false;
             case "setjail":
                 if(!(sender instanceof Player)){
@@ -119,10 +118,41 @@ public class EventCMD implements CommandExecutor {
                 main.getConfig().set("jail.x", loc.getX());
                 main.getConfig().set("jail.y", loc.getY());
                 main.getConfig().set("jail.z", loc.getZ());
+                main.getConfig().set("jail.world", loc.getWorld());
                 main.saveConfig();
                 main.reloadJailLoacation();
                 sender.sendMessage(prefix + "Successfully updated jail location to: (" + color2 + loc.getX() + ","
                         + loc.getZ() + color1 + ")");
+                return false;
+            case "tpalive":
+                if(!(sender instanceof Player)) {
+                    sender.sendMessage(prefix + "Sorry, you can't do that!");
+                    return false;
+                }
+                if(!eventClass.isStarted()){
+                    sender.sendMessage(prefix + ChatColor.RED + "The event hasn't started!");
+                    return false;
+                }
+                sender.sendMessage(prefix + "Teleporting all alive players.");
+                Location l = ((Player) sender).getLocation();
+                for(Player t : eventClass.getPlayers()){
+                    t.teleport(l);
+                }
+                return false;
+            case "tpdead":
+                if(!eventClass.isStarted()){
+                    sender.sendMessage(prefix + ChatColor.RED + "The event hasn't started!");
+                    return false;
+                }
+                if(!(sender instanceof Player)) {
+                    sender.sendMessage(prefix + "Sorry, you can't do that!");
+                    return false;
+                }
+                sender.sendMessage(prefix + "Teleporting all dead players.");
+                Location location = ((Player) sender).getLocation();
+                for(Player t : main.getServer().getOnlinePlayers()){
+                    if(!eventClass.getPlayers().contains(t)) t.teleport(location);
+                }
                 return false;
             default:
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',color1 + ChatColor.BOLD + "Events " + ChatColor.GRAY + "(1/1)\n" +
@@ -131,7 +161,8 @@ public class EventCMD implements CommandExecutor {
                         color1 + "/event revive <player> &8- " + color2 + "Tells you if player is in the event.\n" +
                         color1 + "/event isalive <player> &8- " + color2 + "Tells you if player is in the event.\n" +
                         color1 + "/event exclude <player> &8- " + color2 + "Remove a player from the event.\n" +
-                        color1 + "/event setjail &8- " + color2 + "Sets the location for the jail where the player's respawn."
+                        color1 + "/event setjail &8- " + color2 + "Sets the location for the jail where the player's respawn.\n" +
+                        color1 + "Plugin created by "+color2+"S1ant"+color1+"."
                 ));
                 return false;
         }

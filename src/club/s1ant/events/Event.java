@@ -11,6 +11,7 @@ public class Event {
     private static Event instance;
     private boolean started = false;
     private ArrayList<Player> players =  new ArrayList<Player>();
+    private int startCount;
 
     public boolean isInEvent(Player p){
         if(!isStarted()) return false;
@@ -20,6 +21,11 @@ public class Event {
         if(!isStarted()) return;
         players.add(p);
     }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
     public void removePlayer(Player p){
         if(!isStarted()) return;
         players.remove(p);
@@ -45,13 +51,20 @@ public class Event {
         return started;
     }
 
+    public int getStartCount() { return startCount; }
+
     public void startEvent() {
         this.started = true;
+        for(Player p : Bukkit.getOnlinePlayers()){
+            addPlayer(p);
+        }
+        this.startCount = players.size();
     }
 
     public void endEvent(){
         this.started = false;
         clearList();
+        startCount = 0;
     }
 
     public static Event getInstance(){

@@ -6,3 +6,7 @@ jail:
   x: 0.5
   y: 63
   z: 0.5
+  world: "world"
+revived: "You have been revived!"
+eliminated: "You have been eliminated!"
+addPlayersAfterStart: false

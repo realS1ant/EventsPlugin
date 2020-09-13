@@ -54,6 +54,9 @@ public class EventsExpansion extends PlaceholderExpansion {
             }
             return (eventClass.isInEvent(player) ? "Yes" : "No");
         }
+        if(identifier.equals("startcount")){
+            return eventClass.getStartCount()+"";
+        }
         return null;
     }
 }

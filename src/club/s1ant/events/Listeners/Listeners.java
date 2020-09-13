@@ -3,6 +3,7 @@ package club.s1ant.events.Listeners;
 import club.s1ant.events.Event;
 import club.s1ant.events.EventsPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ public class Listeners implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         if(!eventClass.isStarted()) return;
+        if(!main.getConfig().getBoolean("addPlayersAfterStart")) return;
         eventClass.addPlayer(e.getPlayer());
         Bukkit.broadcastMessage(EventsPlugin.getInstance().getPrefix() + "Player Added: " +
                 EventsPlugin.getInstance().getColorTwo() + e.getPlayer().getName());
@@ -39,6 +41,7 @@ public class Listeners implements Listener {
     public void onDeath(PlayerDeathEvent e){
         if(!eventClass.isStarted()) return;
         eventClass.removePlayer(e.getEntity());
+        e.getEntity().sendMessage(main.getPrefix() + ChatColor.translateAlternateColorCodes('&', main.getConfig().getString("eliminated")));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

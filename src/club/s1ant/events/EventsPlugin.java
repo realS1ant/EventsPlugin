@@ -6,6 +6,7 @@ import club.s1ant.events.Placeholder.EventsExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class EventsPlugin extends JavaPlugin {
@@ -42,7 +43,7 @@ public class EventsPlugin extends JavaPlugin {
     }
     public void reloadJailLoacation(){
         reloadConfig();
-        this.jailLocation = new Location(getServer().getWorld("world"), getConfig().getDouble("jail.x"), getConfig().getDouble("jail.y"), getConfig().getDouble("jail.z"));
+        this.jailLocation = new Location(Bukkit.getWorld(getConfig().getString("jail.world")), getConfig().getDouble("jail.x"), getConfig().getDouble("jail.y"), getConfig().getDouble("jail.z"));
     }
     public static EventsPlugin getInstance(){
         return instance;
